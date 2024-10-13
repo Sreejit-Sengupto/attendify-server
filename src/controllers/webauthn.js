@@ -37,7 +37,7 @@ export const createRegisterChallenge = async (req, res) => {
     }
 
     const options = await generateRegistrationOptions({
-      rpID: "localhost",
+      rpID: "attendifyapp.vercel.app",
       rpName: "Attendify",
       userName:
         category === "ORG"
@@ -97,8 +97,8 @@ export const verifyRegisterChallenge = async (req, res) => {
 
   const verificationResult = await verifyRegistrationResponse({
     expectedChallenge: challenge,
-    expectedOrigin: "http://localhost:5173",
-    expectedRPID: "localhost",
+    expectedOrigin: "https://attendifyapp.vercel.app",
+    expectedRPID: "attendify.vercel.app",
     response: credential,
   });
 
@@ -161,7 +161,7 @@ export const createLoginChallenge = async (req, res) => {
   }
 
   const options = await generateAuthenticationOptions({
-    rpID: "localhost",
+    rpID: "attendify.vercel.app",
   });
 
   const updatedUserDoc = await databases.updateDocument(
@@ -216,8 +216,8 @@ export const verifyLoginChallenge = async (req, res) => {
 
     const verificationResult = await verifyAuthenticationResponse({
       expectedChallenge: challenge,
-      expectedOrigin: "http://localhost:5173",
-      expectedRPID: "localhost",
+      expectedOrigin: "https://attendifyapp.vercel.app",
+      expectedRPID: "attendify.vercel.app",
       response: cred,
       authenticator: decryptedAuthenticator,
     });
