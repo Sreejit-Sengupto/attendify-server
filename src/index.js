@@ -14,7 +14,7 @@ dotenv.config({
 const app = express();
 app.use(
   cors({
-    origin: "https://attendifyapp.vercel.app",
+    origin: ["https://attendifyapp.vercel.app", "http://localhost:5173"],
     credentials: true,
   })
 );

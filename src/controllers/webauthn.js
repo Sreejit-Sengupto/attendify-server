@@ -37,12 +37,16 @@ export const createRegisterChallenge = async (req, res) => {
     }
 
     const options = await generateRegistrationOptions({
-      rpID: "attendifyapp.vercel.app",
-      rpName: "Attendify",
+      rpID:
+        process.env.ENV === "PROD" ? "attendifyapp.vercel.app" : "localhost",
+      rpName: process.env.ENV === "PROD" ? "Attendify" : "localhost",
       userName:
         category === "ORG"
           ? userDoc.documents[0].name
           : `${userDoc.documents[0].firstName} ${userDoc.documents[0].lastName}`,
+      authenticatorSelection: {
+        residentKey: "discouraged",
+      },
     });
 
     console.log(options.challenge);
@@ -97,8 +101,12 @@ export const verifyRegisterChallenge = async (req, res) => {
 
   const verificationResult = await verifyRegistrationResponse({
     expectedChallenge: challenge,
-    expectedOrigin: "https://attendifyapp.vercel.app",
-    expectedRPID: "attendifyapp.vercel.app",
+    expectedOrigin:
+      process.env.ENV === "PROD"
+        ? "https://attendifyapp.vercel.app"
+        : "http://localhost:5173",
+    expectedRPID:
+      process.env.ENV === "PROD" ? "attendifyapp.vercel.app" : "localhost",
     response: credential,
   });
 
@@ -161,7 +169,8 @@ export const createLoginChallenge = async (req, res) => {
   }
 
   const options = await generateAuthenticationOptions({
-    rpID: "attendifyapp.vercel.app",
+    rpID: process.env.ENV === "PROD" ? "attendifyapp.vercel.app" : "localhost",
+    userVerification: "required",
   });
 
   const updatedUserDoc = await databases.updateDocument(
@@ -216,8 +225,12 @@ export const verifyLoginChallenge = async (req, res) => {
 
     const verificationResult = await verifyAuthenticationResponse({
       expectedChallenge: challenge,
-      expectedOrigin: "https://attendifyapp.vercel.app",
-      expectedRPID: "attendifyapp.vercel.app",
+      expectedOrigin:
+        process.env.ENV === "PROD"
+          ? "https://attendifyapp.vercel.app"
+          : "http://localhost:5173",
+      expectedRPID:
+        process.env.ENV === "PROD" ? "attendifyapp.vercel.app" : "localhost",
       response: cred,
       authenticator: decryptedAuthenticator,
     });
@@ -237,7 +250,7 @@ export const verifyLoginChallenge = async (req, res) => {
       }
     );
 
-    return res.status(200).json({ message: "Verified", verifcation: true });
+    return res.status(200).json({ message: "Verified", verification: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
