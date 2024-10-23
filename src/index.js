@@ -22,6 +22,9 @@ app.use(
 app.use(express.json({ limit: "16kb" }));
 
 import webAuthnRouter from "./routes/webauthn.js";
+import labelRouter from "./routes/user.js";
+
 app.use("/api/v1/passkey", webAuthnRouter);
+app.use("/api/v1/user", labelRouter);
 
 app.listen(3000, () => console.log("Listening on PORT: 3000"));
