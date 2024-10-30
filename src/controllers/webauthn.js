@@ -44,9 +44,6 @@ export const createRegisterChallenge = async (req, res) => {
         category === "ORG"
           ? userDoc.documents[0].name
           : `${userDoc.documents[0].firstName} ${userDoc.documents[0].lastName}`,
-      authenticatorSelection: {
-        residentKey: "discouraged",
-      },
     });
 
     console.log(options.challenge);
@@ -170,7 +167,6 @@ export const createLoginChallenge = async (req, res) => {
 
   const options = await generateAuthenticationOptions({
     rpID: process.env.ENV === "PROD" ? "attendifyapp.vercel.app" : "localhost",
-    userVerification: "required",
   });
 
   const updatedUserDoc = await databases.updateDocument(
