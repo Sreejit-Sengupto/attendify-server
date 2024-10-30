@@ -46,8 +46,6 @@ export const createRegisterChallenge = async (req, res) => {
           : `${userDoc.documents[0].firstName} ${userDoc.documents[0].lastName}`,
     });
 
-    console.log(options.challenge);
-
     const updatedUserDoc = await databases.updateDocument(
       process.env.APPWRITE_DB_ID,
       category === "ORG"
