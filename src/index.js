@@ -27,4 +27,9 @@ import labelRouter from "./routes/user.js";
 app.use("/api/v1/passkey", webAuthnRouter);
 app.use("/api/v1/user", labelRouter);
 
+// pinger
+app.get("/api/v1/ping", (req, res) =>
+  res.status(200).json({ message: "PONG" })
+);
+
 app.listen(3000, () => console.log("Listening on PORT: 3000"));
